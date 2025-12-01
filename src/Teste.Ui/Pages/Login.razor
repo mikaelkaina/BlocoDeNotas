@@ -1,0 +1,22 @@
+﻿@page "/login"
+@using Teste.Ui.Services
+@using Teste.Ui.Models
+@inject IAuthService AuthService
+@inject NavigationManager Nav
+
+<h3>Login</h3>
+
+<input @bind="request.Email" placeholder="Email" />
+<input @bind="request.Password" placeholder="Senha" type="password" />
+<button @onclick="LoginUser">Entrar</button>
+
+@code {
+    private LoginRequest request = new();
+
+    private async Task LoginUser()
+    {
+        var result = await AuthService.LoginAsync(request);
+        if (result != null)
+            Nav.NavigateTo("/hello");
+    }
+}

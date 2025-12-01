@@ -1,0 +1,33 @@
+﻿@page "/register"
+@using Teste.Ui.Services
+@using Teste.Ui.Models
+@inject IAuthService AuthService
+@inject NavigationManager Nav
+
+<h3>Registrar</h3>
+
+<input @bind="request.Email" placeholder="Email" />
+<input @bind="request.Password" placeholder="Senha" type="password" />
+<input @bind="request.ConfirmPassword" placeholder="Confirmar senha" type="password" />
+<button @onclick="RegisterUser">Registrar</button>
+
+@code {
+    private RegisterRequest request = new();
+    private string message = string.Empty;
+
+    private async Task RegisterUser()
+    {
+        var success = await AuthService.RegisterAsync(request);
+
+        if (success)
+        {
+            message = "Usuário registrado com sucesso! Redirecionando para login...";
+            await Task.Delay(1500);
+            Nav.NavigateTo("/login");
+        }
+        else
+        {
+            message = "Erro ao registrar usuário. Verifique os dados e tente novamente.";
+        }
+    }
+}
