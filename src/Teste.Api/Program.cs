@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("Meucors", policy =>
     {
-        policy.WithOrigins("https://localhost:7142")
+        policy.WithOrigins("https://localhost:7215")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();

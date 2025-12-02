@@ -12,7 +12,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddHttpClient("API", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7142/");
-});
+}).AddHttpMessageHandler<AuthHeaderHandler>(); ;
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));
 
@@ -20,6 +20,9 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 builder.Services.AddScoped<AuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<AuthStateProvider>());
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<AuthHeaderHandler>();
+
 
 builder.Services.AddAuthorizationCore();
 
