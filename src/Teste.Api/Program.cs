@@ -1,8 +1,8 @@
+using Scalar.AspNetCore;
 using Teste.Application.Interfaces;
+using Teste.Application.Service;
 using Teste.Application.Services;
 using Teste.Infrastructure;
-using Scalar.AspNetCore;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +22,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 var app = builder.Build();
 

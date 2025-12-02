@@ -9,7 +9,7 @@ public class AuthStateProvider : AuthenticationStateProvider
 {
     private readonly IJSRuntime _js;
 
-    private const string TokenKey = "authToken";
+    private const string TokenKey = "token";
 
     public AuthStateProvider(IJSRuntime js)
     {
@@ -38,6 +38,12 @@ public class AuthStateProvider : AuthenticationStateProvider
     {
         await _js.InvokeVoidAsync("localStorage.removeItem", TokenKey);
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
+
+    public async Task<string?> GetTokenAsync()
+    {
+        var token = await _js.InvokeAsync<string>("localStorage.getItem", TokenKey);
+        return string.IsNullOrWhiteSpace(token) ? null : token;
     }
 
     private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
