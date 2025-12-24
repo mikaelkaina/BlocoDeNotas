@@ -1,6 +1,6 @@
 ﻿using Teste.Application.DTOs;
 
-namespace Teste.Application.Interfaces;
+namespace Teste.Application.Interfaces.Identity;
 
 public interface IAuthService
 {

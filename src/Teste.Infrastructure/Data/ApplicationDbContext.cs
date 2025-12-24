@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Teste.Domain.Entities;
+using Teste.Infrastructure.Identity;
 
 namespace Teste.Infrastructure.Data;
 

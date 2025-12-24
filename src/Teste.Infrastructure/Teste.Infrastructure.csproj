@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -17,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Teste.Domain\Teste.Domain.csproj" />
+	<ProjectReference Include="..\Teste.Application\Teste.Application.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Teste.Domain.Entities;
 using Teste.Infrastructure.Data;
+using Teste.Infrastructure.Identity;
 
 namespace Teste.Infrastructure;
 

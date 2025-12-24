@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Teste.Domain.Entities;
+namespace Teste.Infrastructure.Identity;
 
 public class ApplicationUser : IdentityUser { }

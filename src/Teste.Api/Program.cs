@@ -1,8 +1,13 @@
 using Scalar.AspNetCore;
 using Teste.Application.Interfaces;
+using Teste.Application.Interfaces.Identity;
+using Teste.Application.Interfaces.Repositories;
 using Teste.Application.Service;
 using Teste.Application.Services;
 using Teste.Infrastructure;
+using Teste.Infrastructure.Identity.Security;
+using Teste.Infrastructure.Identity.Service;
+using Teste.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +28,17 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IProfileService, ProfileService>();
+
+builder.Services.AddScoped<IProfileService, ProfileService>()
+    ;
+builder.Services.AddScoped<IIdentityAuthService, IdentityAuthService>();
+
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
+
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+
 
 var app = builder.Build();
 

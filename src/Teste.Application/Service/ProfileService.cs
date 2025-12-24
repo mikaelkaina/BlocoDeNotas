@@ -1,99 +1,62 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Teste.Application.DTOs;
+﻿using Teste.Application.DTOs;
 using Teste.Application.Interfaces;
+using Teste.Application.Interfaces.Repositories;
 using Teste.Domain.Entities;
-using Teste.Infrastructure.Data;
 
 namespace Teste.Application.Service;
 
 public class ProfileService : IProfileService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IProfileRepository _repository;
 
-    public ProfileService(ApplicationDbContext context)
+    public ProfileService(IProfileRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     public async Task<UserProfileDto?> CreateProfileAsync(string userId, CreateProfileDto dto)
     {
-        var existing = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == userId);
+        var existing = await _repository.GetByUserIdAsync(userId);
         if (existing != null) return null;
 
-        double imc = dto.Peso / (dto.Altura * dto.Altura);
-        string classificacao = imc switch
-        {
-            < 18.5 => "Abaixo do peso",
-            >= 18.5 and < 24.9 => "Peso normal",
-            >= 25 and < 29.9 => "Sobrepeso",
-            _ => "Obesidade"
-        };
+        var profile = new UserProfile(
+            userId,
+            dto.Sexo,
+            dto.Idade,
+            dto.Peso,
+            dto.Altura
+        );
 
-        var profile = new UserProfile
-        {
-            Id = Guid.NewGuid(),
-            UserId = userId,
-            Sexo = dto.Sexo,
-            Idade = dto.Idade,
-            Peso = dto.Peso,
-            Altura = dto.Altura,
-            Imc = Math.Round(imc, 2),
-            Classificacao = classificacao
-        };
+        await _repository.AddAsync(profile);
 
-        _context.UserProfiles.Add(profile);
-        await _context.SaveChangesAsync();
-
-        return new UserProfileDto
-        {
-            Sexo = profile.Sexo,
-            Idade = profile.Idade,
-            Peso = profile.Peso,
-            Altura = profile.Altura,
-            Imc = profile.Imc,
-            Classificacao = profile.Classificacao
-        };
+        return MapToDto(profile);
     }
 
     public async Task<UserProfileDto?> GetProfileByUserAsync(string userId)
     {
-        var profile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == userId);
-        if (profile == null) return null;
-
-        return new UserProfileDto
-        {
-            Sexo = profile.Sexo,
-            Idade = profile.Idade,
-            Peso = profile.Peso,
-            Altura = profile.Altura,
-            Imc = profile.Imc,
-            Classificacao = profile.Classificacao
-        };
+        var profile = await _repository.GetByUserIdAsync(userId);
+        return profile == null ? null : MapToDto(profile);
     }
 
     public async Task<UserProfileDto?> UpdateProfileAsync(string userId, CreateProfileDto dto)
     {
-        var profile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == userId);
+        var profile = await _repository.GetByUserIdAsync(userId);
         if (profile == null) return null;
 
-        profile.Sexo = dto.Sexo;
-        profile.Idade = dto.Idade;
-        profile.Peso = dto.Peso;
-        profile.Altura = dto.Altura;
+        profile.AtualizarDados(
+            dto.Sexo,
+            dto.Idade,
+            dto.Peso,
+            dto.Altura
+        );
 
-        double imc = profile.Peso / (profile.Altura * profile.Altura);
-        profile.Imc = Math.Round(imc, 2);
-        profile.Classificacao = imc switch
-        {
-            < 18.5 => "Abaixo do peso",
-            >= 18.5 and < 24.9 => "Peso normal",
-            >= 25 and < 29.9 => "Sobrepeso",
-            _ => "Obesidade"
-        };
+        await _repository.UpdateAsync(profile);
 
-        _context.UserProfiles.Update(profile);
-        await _context.SaveChangesAsync();
+        return MapToDto(profile);
+    }
 
+    private static UserProfileDto MapToDto(UserProfile profile)
+    {
         return new UserProfileDto
         {
             Sexo = profile.Sexo,

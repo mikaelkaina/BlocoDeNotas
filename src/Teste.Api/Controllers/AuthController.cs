@@ -1,7 +1,7 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Teste.Application.DTOs;
-using Teste.Application.Interfaces;
+using Teste.Application.Interfaces.Identity;
 
 namespace Teste.Api.Controllers;
 
