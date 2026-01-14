@@ -39,6 +39,9 @@ builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 
+builder.Services.AddScoped<INoteService, NoteService>();
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
+
 
 var app = builder.Build();
 
