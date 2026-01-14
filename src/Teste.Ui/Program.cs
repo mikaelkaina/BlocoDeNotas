@@ -23,6 +23,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<AuthHeaderHandler>();
 
+builder.Services.AddScoped<NoteApiService>();
+
 
 builder.Services.AddAuthorizationCore();
 

@@ -1,0 +1,82 @@
+﻿@page "/notes"
+@using Microsoft.AspNetCore.Authorization
+@using Teste.Ui.Models.Notes
+@using Teste.Ui.Services
+@inject NoteApiService NoteService
+@attribute [Authorize]
+
+<h3>📝 Minhas Notas</h3>
+
+<div class="card p-3 mb-3">
+    <input class="form-control mb-2"
+           placeholder="Título"
+           @bind="model.Title" />
+
+    <textarea class="form-control mb-2"
+              placeholder="Conteúdo"
+              @bind="model.Content">
+    </textarea>
+
+    <button class="btn btn-primary" @onclick="Create">
+        Salvar nota
+    </button>
+</div>
+
+@if (notes == null)
+{
+    <p>Carregando...</p>
+}
+else if (!notes.Any())
+{
+    <p>Nenhuma nota cadastrada.</p>
+}
+else
+{
+    @foreach (var note in notes)
+    {
+        <div class="card p-3 mb-2">
+            <h5>@note.Title</h5>
+            <small>@note.CreatedAt.ToLocalTime()</small>
+            <p>@note.Content</p>
+
+            <button class="btn btn-danger btn-sm"
+                    @onclick="() => Delete(note.Id)">
+                Excluir
+            </button>
+        </div>
+    }
+}
+
+@code {
+
+    private CreateNoteDto model = new();
+    private List<NoteDto>? notes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Load();
+    }
+
+    private async Task Load()
+    {
+        notes = await NoteService.GetMyNotes();
+    }
+
+    private async Task Create()
+    {
+        if (string.IsNullOrWhiteSpace(model.Title))
+            return;
+
+        await NoteService.CreateAsync(model);
+        model = new CreateNoteDto();
+
+        await Load();
+    }
+
+    private async Task Delete(Guid id)
+    {
+        await NoteService.DeleteAsync(id);
+        await Load();
+    }
+}
+
