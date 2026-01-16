@@ -4,12 +4,42 @@
 @inject IAuthService AuthService
 @inject NavigationManager Nav
 
-<h3>Registrar</h3>
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Criar conta</h2>
 
-<input @bind="request.Email" placeholder="Email" />
-<input @bind="request.Password" placeholder="Senha" type="password" />
-<input @bind="request.ConfirmPassword" placeholder="Confirmar senha" type="password" />
-<button @onclick="RegisterUser">Registrar</button>
+        <input class="auth-input"
+               @bind="request.Email"
+               placeholder="Email"
+               type="email" />
+
+        <input class="auth-input"
+               @bind="request.Password"
+               placeholder="Senha"
+               type="password" />
+
+        <input class="auth-input"
+               @bind="request.ConfirmPassword"
+               placeholder="Confirmar senha"
+               type="password" />
+
+        <button class="auth-button" @onclick="RegisterUser">
+            Registrar
+        </button>
+
+        @if (!string.IsNullOrWhiteSpace(message))
+        {
+            <p class="auth-message">@message</p>
+        }
+
+        <p class="auth-footer">
+            Já tem conta?
+            <a href="javascript:void(0);" @onclick="NavigateToLogin">
+                Entrar
+            </a>
+        </p>
+    </div>
+</div>
 
 @code {
     private RegisterRequest request = new();
@@ -21,13 +51,18 @@
 
         if (success)
         {
-            message = "Usuário registrado com sucesso! Redirecionando para login...";
-            await Task.Delay(1500);
+            message = "Usuário registrado com sucesso!";
+            await Task.Delay(1200);
             Nav.NavigateTo("/login");
         }
         else
         {
-            message = "Erro ao registrar usuário. Verifique os dados e tente novamente.";
+            message = "Erro ao registrar usuário.";
         }
+    }
+
+    private void NavigateToLogin()
+    {
+        Nav.NavigateTo("/login");
     }
 }

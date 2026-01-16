@@ -3,54 +3,98 @@
 @using Teste.Ui.Models.Notes
 @using Teste.Ui.Services
 @inject NoteApiService NoteService
+@inject IAuthService AuthService
+@inject NavigationManager Nav
 @attribute [Authorize]
 
-<h3>📝 Minhas Notas</h3>
+<div class="notes-container">
 
-<div class="card p-3 mb-3">
-    <input class="form-control mb-2"
-           placeholder="Título"
-           @bind="model.Title" />
+    <div class="notes-header">
+        <h2>Minhas Notas</h2>
 
-    <textarea class="form-control mb-2"
-              placeholder="Conteúdo"
-              @bind="model.Content">
-    </textarea>
+        <button class="logout-btn" @onclick="Logout">
+            Sair
+        </button>
+    </div>
 
-    <button class="btn btn-primary" @onclick="Create">
-        Salvar nota
-    </button>
-</div>
+    <div class="notes-card">
 
-@if (notes == null)
-{
-    <p>Carregando...</p>
-}
-else if (!notes.Any())
-{
-    <p>Nenhuma nota cadastrada.</p>
-}
-else
-{
-    @foreach (var note in notes)
+        <input class="notes-input"
+               placeholder="Título"
+               @bind="model.Title" />
+
+        <textarea class="notes-textarea"
+                  placeholder="Conteúdo"
+                  @bind="model.Content">
+        </textarea>
+
+        <div class="notes-actions">
+            @if (isEditing)
+            {
+                <button class="btn-warning" @onclick="Update">
+                    Atualizar
+                </button>
+
+                <button class="btn-secondary" @onclick="CancelEdit">
+                    Cancelar
+                </button>
+            }
+            else
+            {
+                <button class="btn-primary" @onclick="Create">
+                    Salvar nota
+                </button>
+            }
+        </div>
+    </div>
+
+    @if (notes == null)
     {
-        <div class="card p-3 mb-2">
-            <h5>@note.Title</h5>
-            <small>@note.CreatedAt.ToLocalTime()</small>
-            <p>@note.Content</p>
+        <p class="loading">Carregando...</p>
+    }
+    else if (!notes.Any())
+    {
+        <p class="empty">Nenhuma nota cadastrada.</p>
+    }
+    else
+    {
+        <div class="notes-list">
+            @foreach (var note in notes)
+            {
+                <div class="note-item">
+                    <div class="note-header">
+                        <h4>@note.Title</h4>
+                        <small>
+                            @note.CreatedAt.ToLocalTime()
+                        </small>
+                    </div>
 
-            <button class="btn btn-danger btn-sm"
-                    @onclick="() => Delete(note.Id)">
-                Excluir
-            </button>
+                    <p>@note.Content</p>
+
+                    <div class="note-buttons">
+                        <button class="btn-outline-warning"
+                                @onclick="() => StartEdit(note)">
+                            Editar
+                        </button>
+
+                        <button class="btn-danger"
+                                @onclick="() => Delete(note.Id)">
+                            Excluir
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
     }
-}
+</div>
 
 @code {
 
     private CreateNoteDto model = new();
     private List<NoteDto>? notes;
+
+    private bool isEditing = false;
+    private Guid editingNoteId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,10 +117,41 @@ else
         await Load();
     }
 
+    private void StartEdit(NoteDto note)
+    {
+        isEditing = true;
+        editingNoteId = note.Id;
+
+        model.Title = note.Title;
+        model.Content = note.Content;
+    }
+
+    private async Task Update()
+    {
+        await NoteService.UpdateAsync(editingNoteId, model);
+
+        CancelEdit();
+        await Load();
+    }
+
+    private void CancelEdit()
+    {
+        isEditing = false;
+        editingNoteId = Guid.Empty;
+        model = new CreateNoteDto();
+    }
+
     private async Task Delete(Guid id)
     {
         await NoteService.DeleteAsync(id);
         await Load();
     }
+
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        Nav.NavigateTo("/login", true);
+    }
 }
+
 

@@ -4,11 +4,32 @@
 @inject IAuthService AuthService
 @inject NavigationManager Nav
 
-<h3>Login</h3>
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Entrar</h2>
 
-<input @bind="request.Email" placeholder="Email" />
-<input @bind="request.Password" placeholder="Senha" type="password" />
-<button @onclick="LoginUser">Entrar</button>
+        <input class="auth-input"
+               @bind="request.Email"
+               placeholder="Email"
+               type="email" />
+
+        <input class="auth-input"
+               @bind="request.Password"
+               placeholder="Senha"
+               type="password" />
+
+        <button class="auth-button" @onclick="LoginUser">
+            Entrar
+        </button>
+
+        <p class="auth-footer">
+            Não tem conta?
+            <a href="javascript:void(0);" @onclick="NavigateToRegister">
+                Criar agora
+            </a>
+        </p>
+    </div>
+</div>
 
 @code {
     private LoginRequest request = new();
@@ -18,5 +39,10 @@
         var result = await AuthService.LoginAsync(request);
         if (result != null)
             Nav.NavigateTo("/notes");
+    }
+
+    private void NavigateToRegister()
+    {
+        Nav.NavigateTo("/register");
     }
 }
