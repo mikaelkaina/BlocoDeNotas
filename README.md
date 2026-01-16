@@ -2,7 +2,7 @@ Notes App - Blazor + .NET
 
 Este projeto é uma aplicação completa de bloco de notas desenvolvida com .NET no backend e Blazor no frontend, implementando autenticação, autorização e operações CRUD de forma segura e organizada.
 
-Funcionalidades
+Funcionalidades:
 
 Registro de usuário,
 Login com autenticação,
@@ -12,7 +12,8 @@ Criar, listar, editar e excluir notas,
 Comunicação segura com API,
 Persistência de dados em SQL Server.
 
-🛠 Tecnologias utilizadas
+🛠 Tecnologias utilizadas:
+
 .NET,
 Blazor,
 ASP.NET Identity,
@@ -22,7 +23,7 @@ Entity Framework Core,
 Clean Architecture,
 Dependency Injection.
 
-🎯 Objetivo do projeto
+🎯 Objetivo do projeto:
 
 Este projeto foi desenvolvido com o objetivo de praticar:
 Arquitetura em camadas,
@@ -31,7 +32,7 @@ Integração front-end com API,
 Boas práticas de desenvolvimento,
 Construção de aplicações reais do zero.
 
-⚙️ Como executar
+⚙️ Como executar:
 
 Clone o repositório
 Configure a string de conexão no appsettings.json,
