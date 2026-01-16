@@ -11,7 +11,7 @@ criar, listar, editar e excluir notas,
 comunicação segura com API,
 persistência de dados em SQL Server.
 
-🛠 Tecnologias utilizadas:
+Tecnologias utilizadas:
 .NET,
 Blazor,
 ASP.NET Identity,
@@ -21,7 +21,7 @@ Entity Framework Core,
 Clean Architecture,
 Dependency Injection.
 
-🎯 Objetivo do projeto:
+Objetivo do projeto:
 Este projeto foi desenvolvido com o objetivo de praticar:
 Arquitetura em camadas,
 autenticação e autorização,
@@ -29,7 +29,7 @@ integração front-end com API,
 boas práticas de desenvolvimento,
 construção de aplicações reais do zero.
 
-⚙️ Como executar:
+Como executar:
 Clone o repositório,
 configure a string de conexão no appsettings.json,
 execute as migrations,
