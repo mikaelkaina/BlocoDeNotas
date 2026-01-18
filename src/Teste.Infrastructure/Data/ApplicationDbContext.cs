@@ -16,8 +16,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     // 👇 DbSet padrão do Identity (explícito)
     public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
 
-    public DbSet<UserProfile> UserProfiles { get; set; } = null!;
-
     public DbSet<Note> Notes { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)

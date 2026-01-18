@@ -31,13 +31,9 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddScoped<IProfileService, ProfileService>()
-    ;
 builder.Services.AddScoped<IIdentityAuthService, IdentityAuthService>();
 
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
-
-builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
