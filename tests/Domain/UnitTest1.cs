@@ -1,10 +1,11 @@
 ﻿using Teste.Domain.Entities;
 using Teste.Domain.Exceptions;
 
-namespace Domain.Tests;
+namespace Domain;
 
 public class NotesTests
 {
+
     [Fact]
     public void Constructor_DeveCriarNotaComDadosValidos()
     {
